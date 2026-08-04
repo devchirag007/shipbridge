@@ -44,3 +44,46 @@ export async function createOrder(courierPartner: string, input: NormalizedOrder
         throw error;
     }
 }
+
+const TERMINAL_STATUSES = ["CANCELLED", "DELIVERED", "FAILED"];
+
+export async function trackOrder(orderId: string) {
+    const order = await prisma.order.findUniqueOrThrow({ where: { id: orderId } });
+
+    if (TERMINAL_STATUSES.includes(order.status)) {
+        return order;
+    }
+
+    const adapter = getCourierAdapter(order.courierPartner);
+
+
+    const result = await adapter.trackShpiment(order.courierOrderId!, order.awbNumber!);
+
+
+    await prisma.trackingEvent.create({
+        data: {
+            orderId: order.id,
+            status: result.normalizedStatus,
+            rawPayload: result.rawResponse as any
+        }
+    })
+
+    return prisma.order.update({
+        where: { id: order.id },
+        data: { status: result.normalizedStatus }
+    })
+}
+
+export async function cancelOrder(orderId: string) {
+    const order = await prisma.order.findUniqueOrThrow({ where: { id: orderId } });
+    const adapter = getCourierAdapter(order.courierPartner);
+
+    await adapter.cancelOrder(order.courierOrderId!);
+
+    return prisma.order.update({
+        where: { id: order.id },
+        data: {
+            status: "CANCELLED"
+        }
+    })
+}

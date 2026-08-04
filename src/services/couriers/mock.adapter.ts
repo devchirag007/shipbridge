@@ -19,7 +19,7 @@ export class MockCourierAdapter implements CourierAdapter {
         }
     }
 
-    async trackShpment(courierOrderId: string, awbNumber: string): Promise<TrackResult> {
+    async trackShpiment(courierOrderId: string, awbNumber: string): Promise<TrackResult> {
         return {
             status: "IN_TRANSIT",
             normalizedStatus: "IN_TRANSIT",

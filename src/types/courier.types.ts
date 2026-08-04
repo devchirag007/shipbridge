@@ -47,7 +47,7 @@ export interface CancelResult {
 export interface CourierAdapter {
     readonly code: string;
     createOrder(input: NormalizedOrderInput): Promise<CreateOrderResult>;
-    trackShpment(courierOrderId: string, awbNumber: string): Promise<TrackResult>;
+    trackShpiment(courierOrderId: string, awbNumber: string): Promise<TrackResult>;
     cancelOrder(courierOrderId: string): Promise<CancelResult>;
 }
 

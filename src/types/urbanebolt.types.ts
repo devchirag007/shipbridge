@@ -58,3 +58,37 @@ export interface UrbaneBoltManifestResponse {
     data?: unknown;
     [key: string]: unknown;
 }
+
+export interface UrbaneBoltScan {
+    statusDateTime: string;
+    statusCode: string;
+    statusCodeDescription: string;
+    reasonCode: string;
+    reasonCodeDescription: string;
+    currentLocation: string;
+}
+
+export interface UrbaneBoltTrackingData {
+    awbNumber: number;
+    orderNumber: string;
+    currentStatusCode: string;
+    currentStatusCodeDescription: string;
+    currentStatusDateTime: string;
+    currentLocation: string;
+    isRto: boolean;
+    scans: UrbaneBoltScan[];
+    [key: string]: unknown;
+}
+
+export interface UrbaneBoltTrackingResponse {
+    status: string;
+    message: string;
+    data: UrbaneBoltTrackingData;
+}
+
+export interface UrbaneBoltCancelResponse {
+    status: string;
+    message: string;
+    successResponse: Array<{ orderNumber: string; awb: string; message: string }>;
+    failureResponse: Array<{ orderNumber?: string; awb?: string; message: string }>;
+}

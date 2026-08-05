@@ -1,6 +1,6 @@
-// src/services/couriers/urbanebolt/urbanebolt.mapper.ts
 import { NormalizedOrderInput } from "../../../types/courier.types";
 import { UrbaneBoltManifestItem } from "../../../types/urbanebolt.types";
+import { OrderStatusLike } from "../../../types/courier.types";
 
 export function normalizeToUrbaneBolt(
     input: NormalizedOrderInput,
@@ -88,4 +88,18 @@ export function parseUrbaneBoltResponse(response: unknown): {
         courierOrderId: success.orderNumber,
         shippingLabel: success.shippingLabel,
     };
+}
+
+const URBANEBOLT_STATUS_MAP: Record<string, OrderStatusLike> = {
+    MAN: "CREATED",
+    PKD: "PICKED_UP",
+    INT: "IN_TRANSIT",
+    OFD: "OUT_FOR_DELIVERY",
+    DEL: "DELIVERED",
+    CAN: "CANCELLED",
+    RTO: "RTO" as any,
+};
+
+export function mapUrbaneBoltStatus(code: string): OrderStatusLike {
+    return URBANEBOLT_STATUS_MAP[code] || "IN_TRANSIT"; // safe fallback for unknown/unmapped codes
 }

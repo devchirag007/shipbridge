@@ -9,7 +9,6 @@ const registry = new Map<string, CourierAdapter>([
 ])
 
 export function getCourierAdapter(code: string): CourierAdapter {
-    console.log("getCourierAdapter called with:", code);
     const adapter = registry.get(code);
     if (!adapter) {
         throw new UnknownCourierError(code, Array.from(registry.keys()));

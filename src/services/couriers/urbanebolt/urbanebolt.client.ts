@@ -1,5 +1,8 @@
 import axios, { AxiosInstance, AxiosError, InternalAxiosRequestConfig } from "axios";
-import { UrbaneBoltAuthResponse, UrbaneBoltManifestItem, UrbaneBoltManifestResponse } from "../../../types/urbanebolt.types";
+import {
+    UrbaneBoltAuthResponse,
+    UrbaneBoltCancelResponse, UrbaneBoltManifestItem, UrbaneBoltManifestResponse, UrbaneBoltTrackingResponse
+} from "../../../types/urbanebolt.types";
 
 interface RetryableRequestConfig extends InternalAxiosRequestConfig {
     _retriedAuth?: boolean;
@@ -84,4 +87,17 @@ export class UrbaneBoltClient {
         const response = await this.http.post<UrbaneBoltManifestResponse>(url, items);
         return response.data;
     }
+
+    async trackShipment(awb: string): Promise<UrbaneBoltTrackingResponse> {
+        const url = "/api/v1/services/tracking-pub";
+        const response = await this.http.get<UrbaneBoltTrackingResponse>(url, { params: { awb } })
+        return response.data;
+    }
+
+    async cancelShipment(awb: string): Promise<UrbaneBoltCancelResponse> {
+        const url = "/api/v1/services/cancel/";
+        const response = await this.http.post<UrbaneBoltCancelResponse>(url, { awbs: awb })
+        return response.data;
+    }
+
 }

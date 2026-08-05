@@ -55,10 +55,7 @@ export async function trackOrder(orderId: string) {
     }
 
     const adapter = getCourierAdapter(order.courierPartner);
-
-
     const result = await adapter.trackShpiment(order.courierOrderId!, order.awbNumber!);
-
 
     await prisma.trackingEvent.create({
         data: {
@@ -78,7 +75,7 @@ export async function cancelOrder(orderId: string) {
     const order = await prisma.order.findUniqueOrThrow({ where: { id: orderId } });
     const adapter = getCourierAdapter(order.courierPartner);
 
-    await adapter.cancelOrder(order.courierOrderId!);
+    await adapter.cancelOrder(order.courierOrderId!, order.awbNumber || undefined);
 
     return prisma.order.update({
         where: { id: order.id },

@@ -1,6 +1,6 @@
 import { CancelResult, CourierAdapter, CreateOrderResult, NormalizedOrderInput, TrackResult } from "../../../types/courier.types";
 import { UrbaneBoltClient } from "./urbanebolt.client";
-import { normalizeToUrbaneBolt, parseUrbaneBoltResponse } from "./urbanebolt.mapper";
+import { mapUrbaneBoltStatus, normalizeToUrbaneBolt, parseUrbaneBoltResponse } from "./urbanebolt.mapper";
 
 export class UrbaneBoltAdapter implements CourierAdapter {
     readonly code = "urbanebolt";
@@ -39,14 +39,27 @@ export class UrbaneBoltAdapter implements CourierAdapter {
     }
 
     async trackShpiment(courierOrderId: string, awbNumber: string): Promise<TrackResult> {
+        const response = await this.client.trackShipment(awbNumber);
+
         return {
-            status: "IN_TRANSIT",
-            normalizedStatus: "IN_TRANSIT",
-            rawResponse: { courierOrderId, awbNumber, status: "IN_TRANSIT" },
+            status: response.data.currentStatusCode,
+            normalizedStatus: mapUrbaneBoltStatus(response.data.currentStatusCode),
+            rawResponse: response,
         };
     }
 
-    async cancelOrder(courierOrderId: string): Promise<CancelResult> {
-        return { success: true, rawResponse: { courierOrderId, cancelled: true } };
+    async cancelOrder(courierOrderId: string, awbNumber: string): Promise<CancelResult> {
+
+        if (!awbNumber) {
+            throw new Error("cancelOrder requires as awbNumber for UrbaneBolt");
+        }
+
+        const response = await this.client.cancelShipment(awbNumber);
+        const succeeded = response.successResponse.length > 0
+
+        return {
+            success: succeeded,
+            rawResponse: response
+        };
     }
 }

@@ -83,6 +83,7 @@ model BulkBatchItem {
     batch           BulkBatch    @relation(fields: [batchId], references: [id])
 
     clientOrderId   String       @map("client_order_id")
+    courierPartner  String       @map("courier_partner")
     payload         Json         @map("payload")
 
     orderId         String?      @unique @map("order_id")

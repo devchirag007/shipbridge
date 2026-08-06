@@ -1,0 +1,183 @@
+{
+  "info": {
+    "_postman_id": "bbd21da3-8444-4425-99f3-2fa5a17b4953",
+    "name": "shipbridge",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "_exporter_id": "53337608",
+    "_collection_link": "https://go.postman.co/collection/53337608-bbd21da3-8444-4425-99f3-2fa5a17b4953?source=collection_link"
+  },
+  "item": [
+    {
+      "name": "MockCourier Create",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json",
+            "type": "text"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n    \"courier_partner\": \"mockcourier\",\n    \"clientOrderId\": \"test-order-003\",\n    \"pickupAddress\": { \"name\": \"A\", \"phone\": \"111\", \"addressLine\": \"x\", \"city\": \"x\", \"state\": \"x\", \"pincode\": \"111\" },\n    \"deliveryAddress\": { \"name\": \"B\", \"phone\": \"222\", \"addressLine\": \"y\", \"city\": \"y\", \"state\": \"y\", \"pincode\": \"222\" },\n    \"packageDetails\": { \"weightKg\": 2 }\n  }",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "http://localhost:3000/api/v1/orders",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "3000",
+          "path": [
+            "api",
+            "v1",
+            "orders"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "UrbaneBolt Create",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json",
+            "type": "text"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n    \"courier_partner\": \"urbanebolt\",\n    \"clientOrderId\": \"ube-test-005\",\n    \"pickupAddress\": { \"name\": \"Sender\", \"phone\": \"9999999999\", \"addressLine\": \"123 Main St\", \"city\": \"Bhopal\", \"state\": \"MP\", \"pincode\": \"122017\", \"email\": \"sender@test.com\" },\n    \"deliveryAddress\": { \"name\": \"Receiver\", \"phone\": \"8888888888\", \"addressLine\": \"456 Oak Ave\", \"city\": \"Delhi\", \"state\": \"DL\", \"pincode\": \"122001\", \"email\": \"receiver@test.com\" },\n    \"packageDetails\": { \"weightKg\": 2, \"declaredValue\": 500 }\n  }",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "http://localhost:3000/api/v1/orders",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "3000",
+          "path": [
+            "api",
+            "v1",
+            "orders"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Track Order",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "http://localhost:3000/api/v1/orders/102b040e-3614-47a8-bc3f-451397f56625/track",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "3000",
+          "path": [
+            "api",
+            "v1",
+            "orders",
+            "102b040e-3614-47a8-bc3f-451397f56625",
+            "track"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Cancel Order",
+      "request": {
+        "method": "POST",
+        "header": [],
+        "url": {
+          "raw": "http://localhost:3000/api/v1/orders/102b040e-3614-47a8-bc3f-451397f56625/cancel",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "3000",
+          "path": [
+            "api",
+            "v1",
+            "orders",
+            "102b040e-3614-47a8-bc3f-451397f56625",
+            "cancel"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "bulk status check",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "http://localhost:3000/api/v1/orders/bulk/e32efd00-5701-4e4a-acfa-5ac09c86804b",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "3000",
+          "path": [
+            "api",
+            "v1",
+            "orders",
+            "bulk",
+            "e32efd00-5701-4e4a-acfa-5ac09c86804b"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "bulk create",
+      "request": {
+        "method": "POST",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n    \"orders\": [\n      { \"courier_partner\": \"mockcourier\", \"clientOrderId\": \"bulk-401\", \"pickupAddress\": {\"name\":\"A\",\"phone\":\"111\",\"addressLine\":\"x\",\"city\":\"x\",\"state\":\"x\",\"pincode\":\"111\"}, \"deliveryAddress\": {\"name\":\"B\",\"phone\":\"222\",\"addressLine\":\"y\",\"city\":\"y\",\"state\":\"y\",\"pincode\":\"222\"}, \"packageDetails\": {\"weightKg\":1} },\n      { \"courier_partner\": \"mockcourier\", \"clientOrderId\": \"bulk-402\", \"pickupAddress\": {\"name\":\"A\",\"phone\":\"111\",\"addressLine\":\"x\",\"city\":\"x\",\"state\":\"x\",\"pincode\":\"111\"}, \"deliveryAddress\": {\"name\":\"B\",\"phone\":\"222\",\"addressLine\":\"y\",\"city\":\"y\",\"state\":\"y\",\"pincode\":\"222\"}, \"packageDetails\": {\"weightKg\":1} }\n    ]\n  }",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "http://localhost:3000/api/v1/orders/bulk",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "3000",
+          "path": [
+            "api",
+            "v1",
+            "orders",
+            "bulk"
+          ]
+        }
+      },
+      "response": []
+    }
+  ]
+}
